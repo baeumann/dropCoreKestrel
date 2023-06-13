@@ -1,0 +1,118 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build windows",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "build",
+                "--runtime",
+                "win-x64",
+                "--configuration",
+                "Debug"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "release windows",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "publish",
+                "--runtime",
+                "win-x64",
+                "--configuration",
+                "Release"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build linux",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "build",
+                "--runtime",
+                "linux-x64",
+                "--configuration",
+                "Debug"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "release linux",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "publish",
+                "--runtime",
+                "linux-x64",
+                "--configuration",
+                "Release"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build osx",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "build",
+                "--runtime",
+                "osx-x64",
+                "--configuration",
+                "Debug"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "release osx",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "publish",
+                "--runtime",
+                "osx-x64",
+                "--configuration",
+                "Release"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "run",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "run"
+            ],
+            "problemMatcher": []
+        }
+    ]
+}
