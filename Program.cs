@@ -18,9 +18,8 @@ byte[] favicon = File.ReadAllBytes("favicon.png");
 
 app.MapGet("/", async context =>
                 {
-                    // await context.Response.WriteAsync(pageToReturn);
                     context.Response.ContentType = "text/html";
-                    await context.Response.WriteAsync(File.ReadAllText("main.html"));
+                    await context.Response.WriteAsync(pageToReturn);
                 });
 app.MapGet("/font", async context =>
                 {
@@ -34,9 +33,8 @@ app.MapGet("/favicon", async context =>
                 });
 app.MapGet("/style", async context =>
                 {
-                    // await context.Response.WriteAsync(styleSheet);
                     context.Response.ContentType = "text/css";
-                    await context.Response.WriteAsync(File.ReadAllText("style.css"));
+                    await context.Response.WriteAsync(styleSheet);
                 });
 
 app.Run();
