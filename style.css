@@ -6,8 +6,8 @@
   
   html,
   body {
-    color: #86c4ed;
-    background: #2c6078;
+    color: #febb6d;
+    background: #475c7b;
     font-family: 'iAWriterDuospace';
     z-index: 1;
   }
@@ -18,12 +18,12 @@
   
   ::selection {
     color: #ffffff;
-    background: #3d5763;
+    background: #b26986;
   }
   
   ::-moz-selection {
     color: #ffffff;
-    background: #3d5763;
+    background: #b26986;
   }
   
   p {
@@ -145,7 +145,7 @@
   }
   
   a:hover {
-    color: #3d5763;
+    color: #b26986;
     font-weight: normal;
     text-decoration: none;
   }
@@ -212,7 +212,7 @@
     padding-bottom: 40px;
     padding-top: 10px;
     text-align: center;
-    color: #507d99;
+    color: #c5c5c5;
   }
   
   .contentContainer {
