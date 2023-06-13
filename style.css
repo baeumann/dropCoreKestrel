@@ -1,7 +1,14 @@
-@font-face {
+  @font-face {
     font-family: "iAWriterDuospace";
     src: url("font") format('woff2');
     font-display: block;
+  }
+
+  .yellowTop {
+    width: 100%;
+    background: #febb6d;
+    height: 15px;
+    margin: 0%;
   }
   
   html,
@@ -10,6 +17,7 @@
     background: #475c7b;
     font-family: 'iAWriterDuospace';
     z-index: 1;
+    margin: 0px;
   }
   
   html {
