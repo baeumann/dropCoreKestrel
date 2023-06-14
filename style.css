@@ -4,6 +4,105 @@
     font-display: block;
   }
 
+  #toastNotification {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 10px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+  }
+  
+  #toastNotification.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  }
+  
+  @-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;} 
+    to {bottom: 30px; opacity: 1;}
+  }
+  
+  @keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+  }
+  
+  @-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;} 
+    to {bottom: 0; opacity: 0;}
+  }
+  
+  @keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+  }
+
+
+  .anchorIcon {
+    fill: #ffffff;
+  }
+
+  .paragraph {
+    background: #5e728f;
+    border-radius: 10px;
+  }
+
+  .headline {
+    display: flex;
+    background: #dce0e3;
+    color: #2b2b2b;
+    padding: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+
+  .headlineStretcher {
+    margin-left: 5px;
+    width: 100%;
+    text-transform: uppercase;
+  }
+
+  .paragraphContent {
+    font-size: large;
+    padding: 20px;
+  }
+
+  .linkButton {
+    text-transform: uppercase;
+    color: #ffffff;
+    background-color: #86c4ed;
+    border-radius: 10px;
+    padding: 2px;
+    font-weight: normal !important;
+    margin-top: 2px;
+    margin-right: 5px;
+    width: 40px;
+    height: 40px;
+    transition: all 0.8s ease-out 0.1s;
+    transition: background-color 0.5s ease-out 0.1s;
+    transform:scale(1,1);
+  }
+  
+  .linkButton:hover,
+  .linkButton:focus {
+    text-transform: uppercase;
+    color: #ffffff;
+    background-color: #7cb4da;
+    border-radius: 10px;
+    padding: 2px;
+    font-weight: bold !important;
+    transform:scale(1.05,1.05);
+  }
+
   .yellowTop {
     width: 100%;
     background: #febb6d;
@@ -68,16 +167,8 @@
     height: auto;
   
     transform:scale(1,1);
-    -webkit-transform:scale(1,1);
-    -ms-transform:scale(1,1);
-    -0-transform:scale(1,1);
-    -moz-transform:scale(1,1);
   
     transition: all 0.1s ease;
-    -webkit-transition: all 0.1s ease;
-    -ms-transition: all 0.1s ease;
-    -0-transition: all 0.1s ease;
-    -moz-transition: all 0.1s ease;
   }
   
   .videoContainer:hover {
@@ -89,16 +180,8 @@
     height: auto;
   
     transform:scale(1.5,1.5);
-    -webkit-transform:scale(1.5,1.5);
-    -ms-transform:scale(1.5,1.5);
-    -0-transform:scale(1.5,1.5);
-    -moz-transform:scale(1.5,1.5);
   
     transition: all 0.15s ease;
-    -webkit-transition: all 0.15s ease;
-    -ms-transition: all 0.15s ease;
-    -0-transition: all 0.15s ease;
-    -moz-transition: all 0.15s ease;
   }
   
   .interactiveImage {
@@ -109,16 +192,8 @@
     height: auto;
   
     transform:scale(1,1);
-    -webkit-transform:scale(1,1);
-    -ms-transform:scale(1,1);
-    -0-transform:scale(1,1);
-    -moz-transform:scale(1,1);
   
     transition: all 0.1s ease;
-    -webkit-transition: all 0.1s ease;
-    -ms-transition: all 0.1s ease;
-    -0-transition: all 0.1s ease;
-    -moz-transition: all 0.1s ease;
   }
   
   .interactiveImage:hover {
@@ -130,16 +205,8 @@
     height: auto;
   
     transform:scale(1.5,1.5);
-    -webkit-transform:scale(1.5,1.5);
-    -ms-transform:scale(1.5,1.5);
-    -0-transform:scale(1.5,1.5);
-    -moz-transform:scale(1.5,1.5);
   
     transition: all 0.15s ease;
-    -webkit-transition: all 0.15s ease;
-    -ms-transition: all 0.15s ease;
-    -0-transition: all 0.15s ease;
-    -moz-transition: all 0.15s ease;
   }
   
   .bigLine {
@@ -180,7 +247,7 @@
   }
   
   .bigFont {
-    font-size: 32pt;
+    font-size: 28pt;
     font-weight: bold;
   }
   
