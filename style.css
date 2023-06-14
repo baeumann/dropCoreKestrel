@@ -54,6 +54,7 @@
   .paragraph {
     background: #5e728f;
     border-radius: 10px;
+    margin-bottom: 50px;
   }
 
   .headline {
@@ -291,7 +292,9 @@
   }
   
   .contentContainer {
-    margin: 10%;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
     width: 900px;
     display: inline-block;
     text-align: left;
