@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using dropCoreKestrel;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,7 @@ app.Urls.Add("http://*:80");
 app.Urls.Add("https://*:443");
 
 ParagraphInjector paragraphInjector = new ParagraphInjector("paragraphs.file");
+FileCache fileCache = new FileCache();
 
 string pageToReturn = paragraphInjector.InjectInto(File.ReadAllText("main.html"));
 string styleSheet = File.ReadAllText("style.css");
@@ -44,7 +46,7 @@ app.MapGet("/image/{filename}", async context =>
 
                     if(File.Exists(filePath)) {
                         context.Response.ContentType = "image/png";
-                        await context.Response.Body.WriteAsync(File.ReadAllBytes(filePath));
+                        await context.Response.Body.WriteAsync(fileCache.Load(filePath));
                     } else {
                         context.Response.StatusCode = 404;
                     }
