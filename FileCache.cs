@@ -5,7 +5,6 @@ namespace dropCoreKestrel
     public class FileCache
     {
         private Dictionary<string, byte[]> _cachedFiles;
-        private int loadCOunt = 0;
 
         public FileCache() {
             _cachedFiles = new Dictionary<string, byte[]>();

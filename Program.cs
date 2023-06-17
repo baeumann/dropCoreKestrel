@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Text;
 using dropCoreKestrel;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,7 @@ app.UseHttpsRedirection();
 app.Urls.Add("http://*:80");
 app.Urls.Add("https://*:443");
 
+RequestStatistics requestStatistics = new RequestStatistics();
 ParagraphInjector paragraphInjector = new ParagraphInjector("paragraphs.file");
 FileCache fileCache = new FileCache();
 
@@ -24,6 +26,7 @@ byte[] favicon = File.ReadAllBytes("favicon.png");
 
 app.MapGet("/", async context =>
                 {
+                    requestStatistics.RequestIncoming();
                     context.Response.ContentType = "text/html";
                     await context.Response.WriteAsync(pageToReturn);
                 });
@@ -67,6 +70,17 @@ app.MapGet("/update", async context =>
                     fileCache.Clear();
 
                     context.Response.StatusCode = 404;
+                    await Task.Run(() => Thread.Sleep(10));
+                });
+
+var uuidString = Guid.NewGuid().ToString() + Guid.NewGuid().ToString() + Guid.NewGuid().ToString() + Guid.NewGuid().ToString() + Guid.NewGuid().ToString();
+uuidString = Convert.ToBase64String(Encoding.UTF8.GetBytes(uuidString));
+Console.WriteLine("STATS LISTENING ON > /" + uuidString);
+app.MapGet("/" + uuidString, async context =>
+                {
+                    context.Response.ContentType = "text/html";
+                    string statisticsString = "<meta http-equiv=\"refresh\" content=\"2\" /><h2>RPS [<b>" + requestStatistics.RequestRate + "</b>]</h2> <br>TODAY [" + requestStatistics.requeustsThisDay + "] <br>LAST 7-DAYS [" + requestStatistics.RequestsOfLastSevenDaysAsString() + "]";
+                    await context.Response.WriteAsync(statisticsString);
                 });
 
 app.Run();
