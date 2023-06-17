@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace dropCoreKestrel
 {
@@ -35,8 +36,8 @@ namespace dropCoreKestrel
             string paragraphTemplate = File.ReadAllText("paragraph.template");
 
             return paragraphTemplate.Replace(PARAGRAPH_ID_MARK, idString)
-                                    .Replace(PARAGRAPH_TITLE_MARK, title)
-                                    .Replace(PARAGRAPH_CONTENT_MARK, content);
+                                    .Replace(PARAGRAPH_TITLE_MARK, title) 
+                                    .Replace(PARAGRAPH_CONTENT_MARK, Regex.Replace(Encoding.UTF8.GetString(Convert.FromBase64String(content)), @"\r\n?|\n", "<br>"));
         }
 
         public string InjectInto(string input) {

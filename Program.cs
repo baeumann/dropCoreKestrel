@@ -57,4 +57,16 @@ app.MapGet("/style", async context =>
                     await context.Response.WriteAsync(styleSheet);
                 });
 
+app.MapGet("/update", async context =>
+                {
+                    Console.WriteLine("UPDATING RESOURCES");
+                    pageToReturn = paragraphInjector.InjectInto(File.ReadAllText("main.html"));
+                    styleSheet = File.ReadAllText("style.css");
+                    font = File.ReadAllBytes("iAWriterDuospace.woff2");
+                    favicon = File.ReadAllBytes("favicon.png");
+                    fileCache.Clear();
+
+                    context.Response.StatusCode = 404;
+                });
+
 app.Run();
