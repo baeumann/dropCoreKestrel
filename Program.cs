@@ -7,10 +7,15 @@ var builder = WebApplication.CreateBuilder(args);
 // builder.Configuration["Kestrel:Certificates:Default:Path"] = "avyan_blue.pem";
 // builder.Configuration["Kestrel:Certificates:Default:KeyPath"] = "privkey.pem";
 builder.WebHost.UseKestrel();
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+});
 
 var app = builder.Build();
 
 app.UseHttpsRedirection();
+app.UseResponseCompression();
 
 app.Urls.Add("http://*:80");
 app.Urls.Add("https://*:443");
