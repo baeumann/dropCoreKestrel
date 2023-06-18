@@ -313,4 +313,12 @@
       width: 100%;
       margin:0%;
     }
+
+    .paragraph {
+      border-radius: 0px;
+    }
+
+    .headline {
+      border-radius: 0px;
+    }
   }
