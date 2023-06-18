@@ -66,6 +66,20 @@ app.MapGet("/image/{filename}", async context =>
                         context.Response.StatusCode = 404;
                     }
                 });
+app.MapGet("/video/{filename}", async context =>
+                {
+                    string pathString = context.Request.Path;
+                    string[] splitPath = pathString.Split("/");
+                    string fileName = splitPath[splitPath.Length-1];
+                    string filePath = Path.Combine("videos", fileName + ".webm");
+
+                    if(File.Exists(filePath)) {
+                        context.Response.ContentType = "video/webm";
+                        await context.Response.Body.WriteAsync(fileCache.Load(filePath));
+                    } else {
+                        context.Response.StatusCode = 404;
+                    }
+                });
 app.MapGet("/style", async context =>
                 {
                     context.Response.ContentType = "text/css";
