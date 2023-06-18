@@ -52,15 +52,15 @@
   }
 
   .paragraph {
-    background: #5e728f;
+    background: #37465b;
     border-radius: 10px;
     margin-bottom: 50px;
   }
 
   .headline {
     display: flex;
-    background: #dce0e3;
-    color: #2b2b2b;
+    background: #08c6ab;
+    color: #37465b;
     padding: 10px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
@@ -80,8 +80,7 @@
   .linkButton {
     cursor: pointer;
     text-transform: uppercase;
-    color: #ffffff;
-    background-color: #86c4ed;
+    background-color: #9de5db;
     border-radius: 10px;
     padding: 2px;
     font-weight: normal !important;
@@ -97,25 +96,24 @@
   .linkButton:hover,
   .linkButton:focus {
     text-transform: uppercase;
-    color: #ffffff;
-    background-color: #7cb4da;
+    background-color: #c5e2de;
     border-radius: 10px;
     padding: 2px;
     font-weight: bold !important;
     transform:scale(1.05,1.05);
   }
 
-  .yellowTop {
+  .topLine {
     width: 100%;
-    background: #febb6d;
+    background: #08c6ab;
     height: 15px;
     margin: 0%;
   }
   
   html,
   body {
-    color: #febb6d;
-    background: #475c7b;
+    color: #dfdfdf;
+    background: #212b38;
     font-family: 'Roboto-Mono-regular';
     z-index: 1;
     margin: 0px;
@@ -127,12 +125,12 @@
   
   ::selection {
     color: #ffffff;
-    background: #b26986;
+    background: #726eff;
   }
   
   ::-moz-selection {
     color: #ffffff;
-    background: #b26986;
+    background: #726eff;
   }
   
   p {
@@ -226,7 +224,7 @@
   }
   
   a:hover {
-    color: #b26986;
+    color: #726eff;
     font-weight: normal;
     text-decoration: none;
   }
@@ -253,7 +251,7 @@
   }
   
   .bigFont {
-    font-size: 28pt;
+    font-size: 26pt;
     font-weight: bold;
   }
   

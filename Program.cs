@@ -75,6 +75,7 @@ app.MapGet("/style", async context =>
 app.MapGet("/update", async context =>
                 {
                     Console.WriteLine("UPDATING RESOURCES");
+                    paragraphInjector = new ParagraphInjector("paragraphs.file");
                     pageToReturn = paragraphInjector.InjectInto(File.ReadAllText("main.html"));
                     styleSheet = File.ReadAllText("style.css");
                     font = File.ReadAllBytes("iAWriterDuospace.woff2");
