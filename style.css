@@ -1,5 +1,5 @@
   @font-face {
-    font-family: "iAWriterDuospace";
+    font-family: "Roboto-Mono-regular";
     src: url("font") format('woff2');
     font-display: block;
   }
@@ -116,7 +116,7 @@
   body {
     color: #febb6d;
     background: #475c7b;
-    font-family: 'iAWriterDuospace';
+    font-family: 'Roboto-Mono-regular';
     z-index: 1;
     margin: 0px;
   }

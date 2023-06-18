@@ -33,7 +33,7 @@ FileCache fileCache = new FileCache();
 
 string pageToReturn = paragraphInjector.InjectInto(File.ReadAllText("main.html"));
 string styleSheet = File.ReadAllText("style.css");
-byte[] font = File.ReadAllBytes("iAWriterDuospace.woff2");
+byte[] font = File.ReadAllBytes("Roboto-Mono-regular.woff2");
 byte[] favicon = File.ReadAllBytes("favicon.png");
 
 app.MapGet("/", async context =>
