@@ -1,16 +1,23 @@
-using System.Diagnostics;
 using System.Text;
 using dropCoreKestrel;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// builder.Configuration["Kestrel:Certificates:Default:Path"] = "avyan_blue.pem";
-// builder.Configuration["Kestrel:Certificates:Default:KeyPath"] = "privkey.pem";
+if(File.Exists("avyan_blue.pem") && File.Exists("privkey.pem")) {
+    Console.WriteLine("USING PRODUCTIVE CERTIFICATE");
+    builder.Configuration["Kestrel:Certificates:Default:Path"] = "avyan_blue.pem";
+    builder.Configuration["Kestrel:Certificates:Default:KeyPath"] = "privkey.pem";
+} else {
+    Console.WriteLine("USING DEVELOPER CERTIFICATE");
+}
+
 builder.WebHost.UseKestrel();
 builder.Services.AddResponseCompression(options =>
 {
     options.EnableForHttps = true;
 });
+
+builder.Logging.SetMinimumLevel(LogLevel.Error);
 
 var app = builder.Build();
 
@@ -84,7 +91,7 @@ Console.WriteLine("STATS LISTENING ON > /" + uuidString);
 app.MapGet("/" + uuidString, async context =>
                 {
                     context.Response.ContentType = "text/html";
-                    string statisticsString = "<meta http-equiv=\"refresh\" content=\"2\" /><h2>RPS [<b>" + requestStatistics.RequestRate + "</b>]</h2> <br>TODAY [" + requestStatistics.requeustsThisDay + "] <br>LAST 7-DAYS [" + requestStatistics.RequestsOfLastSevenDaysAsString() + "]";
+                    string statisticsString = "<meta http-equiv=\"refresh\" content=\"2\" /><h2>RPS [<b>" + requestStatistics.RequestRate + "</b>]<br>PEAK-RPS [" + requestStatistics.PeakRequestsPerSecond + "]</h2> <br>TODAY [" + requestStatistics.RequeustsThisDay + "] <br>LAST 7-DAYS [" + requestStatistics.RequestsOfLastSevenDaysAsString() + "] <br>UPTIME [" + requestStatistics.UptimeAsString() + "]";
                     await context.Response.WriteAsync(statisticsString);
                 });
 

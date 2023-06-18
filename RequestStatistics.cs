@@ -4,15 +4,22 @@ namespace dropCoreKestrel
 {
     public class RequestStatistics {
 
-        public long[] requestsThisWeek {get; private set;}
-        public long requeustsThisDay {get; private set;}
+        public long[] RequestsThisWeek {get; private set;}
+        public long RequeustsThisDay {get; private set;}
         public long RequestRate {get; private set;}
+        public long PeakRequestsPerSecond {get; private set;}
 
         private int requestsThisSecond;
         private int currentDay;
 
+        private DateTime startTime;
+
+  
+
         public RequestStatistics() {
-            requestsThisWeek = new long[7];
+            startTime = DateTime.Now;
+            RequestsThisWeek = new long[7];
+            PeakRequestsPerSecond = 0;
             currentDay = DateTime.Now.DayOfYear;
 
             var statisticsThread = new Thread(Run);
@@ -26,22 +33,34 @@ namespace dropCoreKestrel
                 RequestRate = requestsThisSecond;
                 requestsThisSecond = 0;
 
+                if(RequestRate > PeakRequestsPerSecond) {
+                    PeakRequestsPerSecond = RequestRate;
+                }
+
                 if(currentDay != DateTime.Now.DayOfYear) {
                     PushWeekStack();
+                    PeakRequestsPerSecond = 0;
 
                     currentDay = DateTime.Now.DayOfYear;
                 }
             }
         }
 
+        public string UptimeAsString() {
+            var currentTime = DateTime.Now;
+            TimeSpan uptime = currentTime.Subtract(startTime);
+        
+            return "Days " + string.Format("{0:N2}", uptime.TotalDays);
+        }
+
         public string RequestsOfLastSevenDaysAsString() {
             StringBuilder stringBuilder = new StringBuilder();
 
-            for(int i = 0; i < requestsThisWeek.Length; i++) {
-                if(i == requestsThisWeek.Length-1) {
-                    stringBuilder.Append(requestsThisWeek[i]);
+            for(int i = 0; i < RequestsThisWeek.Length; i++) {
+                if(i == RequestsThisWeek.Length-1) {
+                    stringBuilder.Append(RequestsThisWeek[i]);
                 } else {
-                    stringBuilder.Append(requestsThisWeek[i] + "|");
+                    stringBuilder.Append(RequestsThisWeek[i] + "|");
                 }
             }
 
@@ -49,19 +68,19 @@ namespace dropCoreKestrel
         }
 
         public void RequestIncoming() {
-            requeustsThisDay++;
+            RequeustsThisDay++;
             requestsThisSecond++;
         }
 
         private void PushWeekStack() {
             //push everything backwards (remove the last day)
-            for(int i = (requestsThisWeek.Length-1); i > 0; i--) {
-                requestsThisWeek[i] = requestsThisWeek[i-1];
+            for(int i = (RequestsThisWeek.Length-1); i > 0; i--) {
+                RequestsThisWeek[i] = RequestsThisWeek[i-1];
             }
             //fill the new day into the first element
-            requestsThisWeek[0] = requeustsThisDay;
+            RequestsThisWeek[0] = RequeustsThisDay;
             //reset the request counter
-            requeustsThisDay = 0;
+            RequeustsThisDay = 0;
         }
     }
 }
