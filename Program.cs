@@ -5,11 +5,11 @@ using dropCoreKestrel;
 var builder = WebApplication.CreateBuilder(args);
 
 if(File.Exists("avyan_blue.pem") && File.Exists("privkey.pem")) {
-    Console.WriteLine("USING PRODUCTIVE CERTIFICATE");
+    PrintMessage("USING PRODUCTIVE CERTIFICATE");
     builder.Configuration["Kestrel:Certificates:Default:Path"] = "avyan_blue.pem";
     builder.Configuration["Kestrel:Certificates:Default:KeyPath"] = "privkey.pem";
 } else {
-    Console.WriteLine("USING DEVELOPER CERTIFICATE");
+    PrintMessage("USING DEVELOPER CERTIFICATE");
 }
 
 builder.WebHost.UseKestrel();
@@ -89,7 +89,7 @@ app.MapGet("/style", async context =>
 
 app.MapGet("/update", async context =>
                 {
-                    Console.WriteLine("UPDATING RESOURCES");
+                    PrintMessage("UPDATING RESOURCES");
                     paragraphInjector = new ParagraphInjector("paragraphs.file");
                     pageToReturn = paragraphInjector.InjectInto(File.ReadAllText("main.html"));
                     styleSheet = File.ReadAllText("style.css");
@@ -103,7 +103,7 @@ app.MapGet("/update", async context =>
 
 var uuidString = Guid.NewGuid().ToString() + Guid.NewGuid().ToString() + Guid.NewGuid().ToString() + Guid.NewGuid().ToString() + Guid.NewGuid().ToString();
 uuidString = Convert.ToBase64String(Encoding.UTF8.GetBytes(uuidString));
-Console.WriteLine("STATS LISTENING ON > /" + uuidString);
+PrintMessage("STATS LISTENING ON > /" + uuidString);
 app.MapGet("/" + uuidString, async context =>
                 {
                     context.Response.ContentType = "text/html";
@@ -112,3 +112,13 @@ app.MapGet("/" + uuidString, async context =>
                 });
 
 app.Run();
+
+
+void PrintMessage(string message) {
+    Console.ForegroundColor = ConsoleColor.Blue;
+    Console.Write(DateTime.Now.ToShortDateString() + " ");
+    Console.ForegroundColor = ConsoleColor.Green;
+    Console.Write(DateTime.Now.ToShortTimeString() + " ");
+    Console.ForegroundColor = ConsoleColor.White;
+    Console.Write(message + "\n");
+}
