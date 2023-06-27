@@ -1,6 +1,12 @@
-using System.Net.Mail;
 using System.Text;
 using dropCoreKestrel;
+
+Console.WriteLine(
+"    _              \n" +
+" __| |_ _ ___ _ __ \n" +
+"/ _` | '_/ _ \\ '_ \\\n" +
+"\\__,_|_| \\___/ .__/ v1.0\n" +
+"             |_|  \n");
 
 var builder = WebApplication.CreateBuilder(args);
 
