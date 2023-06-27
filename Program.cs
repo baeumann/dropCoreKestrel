@@ -1,3 +1,4 @@
+using System.Net.Mail;
 using System.Text;
 using dropCoreKestrel;
 
@@ -92,7 +93,7 @@ app.MapGet("/update", async context =>
                     paragraphInjector = new ParagraphInjector("paragraphs.file");
                     pageToReturn = paragraphInjector.InjectInto(File.ReadAllText("main.html"));
                     styleSheet = File.ReadAllText("style.css");
-                    font = File.ReadAllBytes("iAWriterDuospace.woff2");
+                    font = File.ReadAllBytes("iRoboto-Mono-regular.woff2");
                     favicon = File.ReadAllBytes("favicon.png");
                     fileCache.Clear();
 
