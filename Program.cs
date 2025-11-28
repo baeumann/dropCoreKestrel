@@ -10,9 +10,9 @@ Console.WriteLine(
 
 var builder = WebApplication.CreateBuilder(args);
 
-if(File.Exists("avyan_blue.pem") && File.Exists("privkey.pem")) {
+if(File.Exists("yourcert.pem") && File.Exists("privkey.pem")) {
     PrintMessage("USING PRODUCTIVE CERTIFICATE");
-    builder.Configuration["Kestrel:Certificates:Default:Path"] = "avyan_blue.pem";
+    builder.Configuration["Kestrel:Certificates:Default:Path"] = "yourcert.pem";
     builder.Configuration["Kestrel:Certificates:Default:KeyPath"] = "privkey.pem";
 } else {
     PrintMessage("USING DEVELOPER CERTIFICATE");
