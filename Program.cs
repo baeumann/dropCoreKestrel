@@ -40,7 +40,7 @@ FileCache fileCache = new FileCache();
 
 string pageToReturn = paragraphInjector.InjectInto(File.ReadAllText("main.html"));
 string styleSheet = File.ReadAllText("style.css");
-byte[] font = File.ReadAllBytes("Roboto-Mono-regular.woff2");
+byte[] font = File.ReadAllBytes("YOU_NEED_TO_ADD_YOUR_FONT.woff2");
 byte[] favicon = File.ReadAllBytes("favicon.png");
 
 app.MapGet("/", async context =>
@@ -99,7 +99,7 @@ app.MapGet("/update", async context =>
                     paragraphInjector = new ParagraphInjector("paragraphs.file");
                     pageToReturn = paragraphInjector.InjectInto(File.ReadAllText("main.html"));
                     styleSheet = File.ReadAllText("style.css");
-                    font = File.ReadAllBytes("iRoboto-Mono-regular.woff2");
+                    font = File.ReadAllBytes("YOU_NEED_TO_ADD_YOUR_FONT.woff2");
                     favicon = File.ReadAllBytes("favicon.png");
                     fileCache.Clear();
 
