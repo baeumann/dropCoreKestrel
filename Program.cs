@@ -110,7 +110,7 @@ app.MapGet("/" + uuidString, async context =>
             rps = requestStatistics.RequestRate,
             peak_rps = requestStatistics.PeakRequestsPerSecond,
             today = requestStatistics.RequeustsThisDay,
-            last_7_days = requestStatistics.RequestsThisWeek.Take(7).ToArray(), // only last 7 full days
+            last_7_days = requestStatistics.RequestsThisWeek.Take(7).Reverse().ToArray(), // only last 7 full days
             uptime = requestStatistics.UptimeAsValue(),
             generated_at = DateTime.UtcNow.ToString("o")
         };
