@@ -53,6 +53,13 @@ namespace dropCoreKestrel
             return "Days " + string.Format("{0:N2}", uptime.TotalDays);
         }
 
+        public float UptimeAsValue() {
+            var currentTime = DateTime.Now;
+            TimeSpan uptime = currentTime.Subtract(startTime);
+        
+            return (float)uptime.TotalDays;
+        }
+
         public string RequestsOfLastSevenDaysAsString() {
             StringBuilder stringBuilder = new StringBuilder();
 

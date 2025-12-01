@@ -129,8 +129,8 @@ body {
 /* ensure SVG inside linkButton uses pure white for anchor icon */
 .linkButton svg,
 .linkButton .anchorIcon {
-    width: 16px;
-    height: 16px;
+    width: 32px;
+    height: 32px;
     fill: #ffffff; /* pure white anchor icon */
     stroke: none;
     display: block;
