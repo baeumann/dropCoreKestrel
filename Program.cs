@@ -5,7 +5,7 @@ Console.WriteLine(
 "    _              \n" +
 " __| |_ _ ___ _ __ \n" +
 "/ _` | '_/ _ \\ '_ \\\n" +
-"\\__,_|_| \\___/ .__/ v1.0\n" +
+"\\__,_|_| \\___/ .__/ v1.1\n" +
 "             |_|  \n");
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,7 +40,7 @@ FileCache fileCache = new FileCache();
 
 string pageToReturn = paragraphInjector.InjectInto(File.ReadAllText("main.html"));
 string styleSheet = File.ReadAllText("style.css");
-byte[] font = File.ReadAllBytes("YOU_NEED_TO_ADD_YOUR_FONT.woff2");
+byte[] font = File.ReadAllBytes("Inter-Regular.woff2");
 byte[] favicon = File.ReadAllBytes("favicon.png");
 
 app.MapGet("/", async context =>
@@ -91,20 +91,6 @@ app.MapGet("/style", async context =>
                 {
                     context.Response.ContentType = "text/css";
                     await context.Response.WriteAsync(styleSheet);
-                });
-
-app.MapGet("/update", async context =>
-                {
-                    PrintMessage("UPDATING RESOURCES");
-                    paragraphInjector = new ParagraphInjector("paragraphs.file");
-                    pageToReturn = paragraphInjector.InjectInto(File.ReadAllText("main.html"));
-                    styleSheet = File.ReadAllText("style.css");
-                    font = File.ReadAllBytes("YOU_NEED_TO_ADD_YOUR_FONT.woff2");
-                    favicon = File.ReadAllBytes("favicon.png");
-                    fileCache.Clear();
-
-                    context.Response.StatusCode = 404;
-                    await Task.Run(() => Thread.Sleep(10));
                 });
 
 var uuidString = Guid.NewGuid().ToString() + Guid.NewGuid().ToString() + Guid.NewGuid().ToString() + Guid.NewGuid().ToString() + Guid.NewGuid().ToString();

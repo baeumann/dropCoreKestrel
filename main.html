@@ -2,51 +2,88 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="description" content="DESC">
-    <meta name="author" content="AUTHOR">
+    <meta name="description" content="VINZENT's personal website">
+    <meta name="author" content="VINZENT">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YOUR TITLE</title>
+    <title>VINZENT</title>
 
     <link rel="icon" type="image/png" href="/favicon" />
     <link rel="stylesheet" href="/style">
+    <style>
+        /* keep page-specific overrides here only if necessary; styles moved to style.css */
+    </style>
 </head>
 <script>
 
-  function copyAnchorLinkToClipboard(anchor) {
-    navigator.clipboard.writeText(window.location.origin + "/#" + anchor);
+function copyAnchorLinkToClipboard(anchor) {
+    const href = window.location.origin + "/#" + anchor;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(href).then(() => {
+            showToast("Link copied to clipboard.");
+        }).catch(() => {
+            showToast("Could not copy link.");
+        });
+    } else {
+        // fallback
+        const ta = document.createElement("textarea");
+        ta.value = href;
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+            document.execCommand("copy");
+            showToast("Link copied to clipboard.");
+        } catch {
+            showToast("Could not copy link.");
+        }
+        document.body.removeChild(ta);
+    }
+}
 
-    var toastNotificationElement = document.getElementById("toastNotification");
-    toastNotificationElement.className = "show";
-    setTimeout(function(){ toastNotificationElement.className = toastNotificationElement.className.replace("show", ""); }, 3000);
-  }
-
+function showToast(message) {
+    const toast = document.getElementById("toastNotification");
+    if (!toast) return;
+    toast.textContent = message;
+    // ensure it's rendered from top center (styles handle animation)
+    toast.classList.add("show");
+    clearTimeout(toast._hideTimer);
+    toast._hideTimer = setTimeout(() => toast.classList.remove("show"), 3000);
+}
 </script>
 <body>
 
-    <div class="topLine"></div>
-
-    <!-- Main -->
-    <div class="mainContainer">
-        <div class="contentContainer">
-            <div id="toastNotification">Copied link to clipboard.</div>
-
-            $(paragraphsMark)
-
+    <!-- Top fixed navbar -->
+    <header class="topNav" role="banner" aria-label="Top navigation">
+        <div class="navInner">
+            <div class="logo"><a href="/" aria-label="Home">VINZENT</a></div>
+            <nav class="navItems" aria-label="Main">
+            </nav>
         </div>
-    </div>
+    </header>
 
-      
-    <!-- Bottom -->
-      <div class="footer">
-          <p>
-            This site does not use any cookies or collects any data.
-          </p>
-          <p>
-            Enjoy your stay!
-          </p>
-      </div>
+     <div class="topLine"></div>
 
-    </div>
-
-</body>
-</html>
+     <!-- Main -->
+     <div class="mainContainer">
+         <div class="contentContainer">
+            <div id="toastNotification" role="status" aria-live="polite">Copied link to clipboard.</div>
+             $(paragraphsMark)
+         </div>
+     </div>
+ 
+       
+     <!-- Bottom -->
+       <div class="footer">
+           <p>
+             This site does not use any cookies or collects any data.
+           </p>
+           <p>
+             Enjoy your stay!
+           </p>
+       </div>
+ 
+     </div>
+ 
+ </body>
+ </html>
