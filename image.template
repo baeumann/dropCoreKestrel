@@ -1,1 +1,1 @@
-<img src="image/$(imageName)" class="interactiveImage">
+<img src="image/$(imageName)" loading="lazy" decoding="async" class="interactiveImage">
