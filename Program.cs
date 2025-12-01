@@ -64,7 +64,7 @@ app.MapGet("/image/{filename}", async context =>
                     string pathString = context.Request.Path;
                     string[] splitPath = pathString.Split("/");
                     string fileName = splitPath[splitPath.Length-1];
-                    string filePath = Path.Combine("images", fileName + ".png");
+                    string filePath = Path.Combine("image", fileName + ".png");
 
                     if(File.Exists(filePath)) {
                         context.Response.ContentType = "image/png";
@@ -78,7 +78,7 @@ app.MapGet("/video/{filename}", async context =>
                     string pathString = context.Request.Path;
                     string[] splitPath = pathString.Split("/");
                     string fileName = splitPath[splitPath.Length-1];
-                    string filePath = Path.Combine("videos", fileName + ".webm");
+                    string filePath = Path.Combine("video", fileName + ".webm");
 
                     if(File.Exists(filePath)) {
                         context.Response.ContentType = "video/webm";
