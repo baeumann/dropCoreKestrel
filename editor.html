@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Editor</title>
+    <link rel="stylesheet" href="/style">
+    <style>
+        body {
+            padding-top: 56px;
+            background: #000000 !important;
+            color: #e7e9ea !important;
+        }
+
+        .editor-container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 16px;
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #38444d;
+        }
+
+        .editor-header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #e7e9ea;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-primary {
+            background: #1da1f2;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background-color 0.12s ease;
+        }
+
+        .btn-primary:hover {
+            background: #1a8cd8;
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.02);
+            color: #e7e9ea;
+            padding: 10px 20px;
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background-color 0.12s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.04);
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+        }
+
+        .post-list {
+            background: transparent;
+            border: 1px solid #38444d;
+            border-radius: 0;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .post-item {
+            padding: 12px;
+            border-bottom: 1px solid #38444d;
+            cursor: grab;
+            transition: background-color 0.12s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            user-select: none;
+            color: #e7e9ea;
+        }
+
+        .post-item:last-child {
+            border-bottom: none;
+        }
+
+        .post-item:hover {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .post-item.active {
+            background-color: rgba(29, 161, 242, 0.1);
+            border-left: 3px solid #1da1f2;
+            padding-left: 9px;
+        }
+
+        .post-item.drag-over {
+            background-color: rgba(29, 161, 242, 0.2);
+            border-top: 2px solid #1da1f2;
+        }
+
+        .post-item.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+
+        .drag-handle {
+            color: #71767b;
+            cursor: grab;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .post-item.dragging .drag-handle {
+            cursor: grabbing;
+        }
+
+        .post-item-title {
+            font-weight: 500;
+            color: #e7e9ea;
+            font-size: 14px;
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .editor-panel {
+            background: transparent;
+            border: 1px solid #38444d;
+            padding: 20px;
+            border-radius: 0;
+        }
+
+        .editor-empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 300px;
+            color: #71767b;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #e7e9ea;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 8px;
+            color: #e7e9ea;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .form-group textarea {
+            min-height: 250px;
+            resize: vertical;
+            font-family: monospace;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #71767b;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: rgba(29, 161, 242, 0.5);
+            background: rgba(255,255,255,0.04);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-small {
+            padding: 8px 12px;
+            font-size: 13px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.04);
+            color: #e7e9ea;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.12s ease;
+        }
+
+        .btn-small:hover {
+            background: rgba(255,255,255,0.04);
+        }
+
+        .btn-danger {
+            color: #f91880;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            position: fixed;
+            top: 72px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            min-width: 300px;
+            animation: slideDown 0.22s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translate(-50%, -20px); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+
+        .alert-success {
+            background: rgba(17, 191, 71, 0.1);
+            border: 1px solid rgba(17, 191, 71, 0.3);
+            color: #11bf47;
+        }
+
+        .alert-error {
+            background: rgba(249, 24, 128, 0.1);
+            border: 1px solid rgba(249, 24, 128, 0.3);
+            color: #f91880;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #71767b;
+            margin-top: 6px;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .insert-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .post-list {
+                max-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="editor-container">
+        <div class="editor-header">
+            <h1>Post Editor</h1>
+            <div class="header-actions">
+                <button class="btn-secondary" onclick="loadFile()">📂 Load File</button>
+                <button class="btn-primary" onclick="saveFile()">💾 Save File</button>
+            </div>
+        </div>
+
+        <div id="alertContainer"></div>
+
+        <div class="main-layout">
+            <div class="post-list" id="postList">
+                <div class="editor-empty">No posts loaded</div>
+            </div>
+
+            <div class="editor-panel" id="editorPanel">
+                <div class="editor-empty">Select a post to edit</div>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="fileInput" accept=".file" onchange="handleFileSelect(event)">
+
+    <script>
+        let posts = [];
+        let currentPostIndex = null;
+        let draggedIndex = null;
+
+        function loadFile() {
+            document.getElementById('fileInput').click();
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const content = e.target.result;
+                    posts = parsePostsFile(content);
+                    currentPostIndex = null;
+                    renderPostList();
+                    renderEditor();
+                    showAlert(`Loaded ${posts.length} posts`, 'success');
+                } catch (error) {
+                    showAlert('Error loading file: ' + error.message, 'error');
+                }
+            };
+            reader.readAsText(file);
+            document.getElementById('fileInput').value = '';
+        }
+
+        function parsePostsFile(content) {
+            const lines = content.trim().split('\n').filter(line => line.trim());
+            return lines.map(line => {
+                const pipeIndex = line.indexOf('|');
+                if (pipeIndex === -1) return { title: 'Untitled', content: '' };
+                
+                const title = line.substring(0, pipeIndex).trim();
+                const base64Content = line.substring(pipeIndex + 1).trim();
+                
+                try {
+                    const decodedContent = atob(base64Content);
+                    return { title, content: decodedContent };
+                } catch (error) {
+                    console.error('Failed to decode base64:', error);
+                    return { title, content: '' };
+                }
+            });
+        }
+
+        function saveFile() {
+            if (posts.length === 0) {
+                showAlert('No posts to save', 'error');
+                return;
+            }
+
+            const lines = posts.map(post => {
+                const base64Content = btoa(post.content);
+                return `${post.title}|${base64Content}`;
+            });
+
+            const fileContent = lines.join('\n');
+            const blob = new Blob([fileContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'paragraphs.file';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showAlert('File saved successfully', 'success');
+        }
+
+        function renderPostList() {
+            const listContainer = document.getElementById('postList');
+            if (posts.length === 0) {
+                listContainer.innerHTML = '<div class="editor-empty">No posts loaded</div>';
+                return;
+            }
+
+            listContainer.innerHTML = posts.map((post, index) => `
+                <div class="post-item ${currentPostIndex === index ? 'active' : ''} ${draggedIndex === index ? 'dragging' : ''}"
+                     draggable="true"
+                     data-index="${index}"
+                     ondragstart="onDragStart(event, ${index})"
+                     ondragover="onDragOver(event)"
+                     ondragleave="onDragLeave(event)"
+                     ondrop="onDrop(event, ${index})"
+                     ondragend="onDragEnd(event)"
+                     onclick="selectPost(${index})">
+                    <span class="drag-handle">⋮</span>
+                    <span class="post-item-title">${escapeHtml(post.title)}</span>
+                </div>
+            `).join('');
+        }
+
+        function onDragStart(event, index) {
+            draggedIndex = index;
+            event.dataTransfer.effectAllowed = 'move';
+            event.dataTransfer.setData('text/plain', index);
+            setTimeout(() => renderPostList(), 0);
+        }
+
+        function onDragOver(event) {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'move';
+            event.currentTarget.classList.add('drag-over');
+        }
+
+        function onDragLeave(event) {
+            event.currentTarget.classList.remove('drag-over');
+        }
+
+        function onDrop(event, targetIndex) {
+            event.preventDefault();
+            event.currentTarget.classList.remove('drag-over');
+            
+            if (draggedIndex === null || draggedIndex === targetIndex) {
+                draggedIndex = null;
+                renderPostList();
+                return;
+            }
+
+            // Reorder array
+            const draggedPost = posts[draggedIndex];
+            posts.splice(draggedIndex, 1);
+            posts.splice(targetIndex, 0, draggedPost);
+
+            draggedIndex = null;
+            renderPostList();
+            showAlert('Post moved', 'success');
+        }
+
+        function onDragEnd(event) {
+            draggedIndex = null;
+            document.querySelectorAll('.post-item').forEach(item => {
+                item.classList.remove('drag-over');
+            });
+            renderPostList();
+        }
+
+        function selectPost(index) {
+            currentPostIndex = index;
+            renderPostList();
+            renderEditor();
+        }
+
+        function renderEditor() {
+            const panel = document.getElementById('editorPanel');
+
+            if (currentPostIndex === null || !posts[currentPostIndex]) {
+                panel.innerHTML = '<div class="editor-empty">Select a post to edit</div>';
+                return;
+            }
+
+            const post = posts[currentPostIndex];
+            panel.innerHTML = `
+                <div class="form-group">
+                    <label for="postTitle">Title</label>
+                    <input type="text" id="postTitle" value="${escapeHtml(post.title)}" placeholder="Post title">
+                </div>
+                <div class="form-group">
+                    <label for="postContent">Content</label>
+                    <textarea id="postContent" placeholder="Write your post content here...">${escapeHtml(post.content)}</textarea>
+                    <div class="hint">Content will be automatically converted to Base64 when saved.</div>
+                    <div class="insert-buttons">
+                        <button type="button" class="btn-small" onclick="insertImageMark()">🖼️ Insert Image</button>
+                        <button type="button" class="btn-small" onclick="insertVideoMark()">🎬 Insert Video</button>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-small" onclick="updatePost()">Update</button>
+                    <button type="button" class="btn-small btn-danger" onclick="deletePost()">Delete</button>
+                    <button type="button" class="btn-small" onclick="addNewPost()" style="margin-left: auto;">+ New Post</button>
+                </div>
+            `;
+        }
+
+        function insertImageMark() {
+            const filename = prompt('Enter image filename:');
+            if (!filename) return;
+            insertTextAtCursor(`$(image|${filename})`);
+        }
+
+        function insertVideoMark() {
+            const filename = prompt('Enter video filename:');
+            if (!filename) return;
+            insertTextAtCursor(`$(video|${filename})`);
+        }
+
+        function insertTextAtCursor(text) {
+            const textarea = document.getElementById('postContent');
+            if (!textarea) return;
+
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const before = textarea.value.substring(0, start);
+            const after = textarea.value.substring(end);
+            
+            textarea.value = before + text + '\n' + after;
+            textarea.selectionStart = textarea.selectionEnd = start + text.length + 1;
+            textarea.focus();
+        }
+
+        function updatePost() {
+            if (currentPostIndex === null) return;
+
+            const title = document.getElementById('postTitle').value.trim();
+            const content = document.getElementById('postContent').value;
+
+            if (!title) {
+                showAlert('Title is required', 'error');
+                return;
+            }
+
+            posts[currentPostIndex] = { title, content };
+            renderPostList();
+            showAlert('Post updated', 'success');
+        }
+
+        function deletePost() {
+            if (currentPostIndex === null) return;
+            if (!confirm('Delete this post?')) return;
+
+            posts.splice(currentPostIndex, 1);
+            currentPostIndex = null;
+            renderPostList();
+            renderEditor();
+            showAlert('Post deleted', 'success');
+        }
+
+        function addNewPost() {
+            posts.push({ title: 'New Post', content: '' });
+            currentPostIndex = posts.length - 1;
+            renderPostList();
+            renderEditor();
+            setTimeout(() => {
+                document.getElementById('postTitle').focus();
+            }, 0);
+        }
+
+        function showAlert(message, type) {
+            const container = document.getElementById('alertContainer');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            container.appendChild(alert);
+            setTimeout(() => alert.remove(), 3000);
+        }
+
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+    </script>
+</body>
+</html>
