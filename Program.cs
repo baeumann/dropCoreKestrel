@@ -41,7 +41,6 @@ FileCache fileCache = new FileCache();
 
 string pageToReturn = paragraphInjector.InjectInto(File.ReadAllText("main.html"));
 string styleSheet = File.ReadAllText("style.css");
-byte[] font = File.ReadAllBytes("Inter-Regular.woff2");
 byte[] favicon = File.ReadAllBytes("favicon.png");
 
 app.MapGet("/", async context =>
@@ -49,11 +48,6 @@ app.MapGet("/", async context =>
                     requestStatistics.RequestIncoming();
                     context.Response.ContentType = "text/html";
                     await context.Response.WriteAsync(pageToReturn);
-                });
-app.MapGet("/font", async context =>
-                {
-                    context.Response.ContentType = "application/font-woff2";
-                    await context.Response.Body.WriteAsync(font);
                 });
 app.MapGet("/favicon", async context =>
                 {

@@ -1,9 +1,3 @@
-@font-face {
-    font-family: "Inter";
-    src: url("font") format('woff2');
-    font-display: block;
-}
-
 /* ensure content isn't hidden under the fixed navbar */
 body {
     /* keep existing body styles but add top padding equal to navbar height */
