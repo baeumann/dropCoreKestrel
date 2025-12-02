@@ -288,6 +288,7 @@
         <div class="editor-header">
             <h1>Post Editor</h1>
             <div class="header-actions">
+                <button class="btn-secondary" onclick="addNewPost()">➕ New Post</button>
                 <button class="btn-secondary" onclick="loadFile()">📂 Load File</button>
                 <button class="btn-primary" onclick="saveFile()">💾 Save File</button>
             </div>
@@ -481,7 +482,6 @@
                 <div class="form-actions">
                     <button type="button" class="btn-small" onclick="updatePost()">Update</button>
                     <button type="button" class="btn-small btn-danger" onclick="deletePost()">Delete</button>
-                    <button type="button" class="btn-small" onclick="addNewPost()" style="margin-left: auto;">+ New Post</button>
                 </div>
             `;
         }
@@ -540,10 +540,15 @@
         }
 
         function addNewPost() {
-            posts.push({ title: 'New Post', content: '' });
-            currentPostIndex = posts.length - 1;
+            // Insert the new post at the beginning of the array
+            posts.unshift({ title: 'New Post', content: '' });
+            
+            // The new post is now at index 0
+            currentPostIndex = 0;
+            
             renderPostList();
             renderEditor();
+            
             setTimeout(() => {
                 document.getElementById('postTitle').focus();
             }, 0);
