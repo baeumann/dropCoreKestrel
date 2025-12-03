@@ -1,6 +1,9 @@
 using System.Text;
 using dropCoreKestrel;
 using System.Text.Json;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Http.Metadata;
+using System.Linq;
 
 Console.WriteLine(
 "    _              \n" +
@@ -244,8 +247,26 @@ app.MapGet("/" + uuidString, async context =>
     await context.Response.WriteAsync(html);
 });
 
-app.Run();
+// Ensure this runs after all MapGet/MapPost calls are registered:
+app.Lifetime.ApplicationStarted.Register(() =>
+{
+    PrintMessage("SERVER RUNNING");
 
+    try
+    {
+        var urls = app.Urls.Any() ? string.Join(", ", app.Urls) : "no explicit urls";
+        PrintMessage("LISTENING ON: " + urls);
+    }
+    catch (Exception ex)
+    {
+        PrintMessage("Could not read URLs: " + ex.Message);
+    }
+});
+
+// optional: notify on shutdown
+app.Lifetime.ApplicationStopped.Register(() => PrintMessage("SERVER STOPPED"));
+
+app.Run();
 
 void PrintMessage(string message) {
     Console.ForegroundColor = ConsoleColor.Blue;
