@@ -13,5 +13,13 @@ When you do not provide your own certificates, it will fall back to developer ce
 The "paragraphs.file" contains your blog posts, I locally got an editing application that can be used to edit this file and create new blog posts in it.
 But I am not currently releasing that. You can still manually do that right now. When adhering to the parsing scheme of that file.
 
-Maybe I will do another editor in the future. Or do actual account management so that you could do this online on your web service, but right now I chose not to. To keep the editing of the content on your hosting machine. 
-As that is as secure as can get. Because when they are on your machine... I guess you know what I am on about...
+"editor.html" contains a make shift replacement for that. It is an html application to be run locally, it is not provided by the server. 
+As I do not wish to make the content editable through the web interface (website) but just keep that to the files of the machine itself.
+So only the person having direct access to the machine can alter the content. So it is reduced to the least amount of access vectors possible.
+
+If the RAM is sufficient, everything gets cached. To prevent I/O issues on the machine when requests are made. So use as few pictures and videos as possible.
+They get lazy loaded by the client side (but also server side, if no one requests a certain file, it will never get loaded, it doesn't cache everything right away, also just lazy loading). 
+The backend resource loading is done pretty rudimentary. No database, direct I/O utilization with caching of once loaded files.
+
+The editor pretty much just handles the base64 encoding and decoding. And allows you for easy insertion of the text marks used for images and video files.
+Those files have to be manually transmitted to the target hosting machine. So you are just referencing existing files here. No direct upload to the hosting machine.
